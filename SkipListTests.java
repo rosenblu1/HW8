@@ -20,16 +20,15 @@ public class SkipListTests {
   /**
    * Names of some numbers.
    */
-  static final String numbers[] =
-      {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight",
-          "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
-          "sixteen", "seventeen", "eighteen", "nineteen"};
+  static final String numbers[] = {"zero", "one", "two", "three", "four", "five", "six", "seven",
+      "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen",
+      "seventeen", "eighteen", "nineteen"};
 
   /**
    * Names of more numbers.
    */
-  static final String tens[] = {"", "", "twenty", "thirty", "forty", "fifty",
-      "sixty", "seventy", "eighty", "ninety"};
+  static final String tens[] =
+      {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
 
   // +--------+----------------------------------------------------------
   // | Fields |
@@ -62,8 +61,8 @@ public class SkipListTests {
   // +---------+
 
   /**
-   * Set up everything.  Unfortunately, @BeforeEach doesn't seem
-   * to be working, so we do this manually.
+   * Set up everything. Unfortunately, @BeforeEach doesn't seem to be working, so we do this
+   * manually.
    */
   @BeforeEach
   public void setup() {
@@ -75,9 +74,9 @@ public class SkipListTests {
   /**
    * Dump a SkipList to stderr.
    */
-  static <K,V> void dump(SkipList<K,V> map) {
+  static <K, V> void dump(SkipList<K, V> map) {
     System.err.print("[");
-    map.forEach((key,value) -> System.err.println(key + ":" + value + " "));
+    map.forEach((key, value) -> System.err.println(key + ":" + value + " "));
     System.err.println("]");
   } // dump
 
@@ -202,7 +201,7 @@ public class SkipListTests {
   // +-------------+
 
   /**
-   * A really simple test.  Add an element and make sure that it's there.
+   * A really simple test. Add an element and make sure that it's there.
    */
   @Test
   public void simpleTest() {
@@ -219,7 +218,118 @@ public class SkipListTests {
   public void emptyTest() {
     setup();
     assertFalse(strings.containsKey("hello"));
+    
+    
   } // emptyTest()
+
+  
+  @Test
+  public void containsTest() {
+    setup();
+    String[] myString = "brownfxjump".split("");
+    
+    for (String s : myString) {
+      strings.set(s, s);
+    }
+    
+    for (int i = myString.length - 1; i >= 0; i--) {
+      assertTrue(strings.containsKey(myString[i]));
+    }
+  }
+  
+  
+  /**
+   * get simple int data in order
+   */
+  @Test
+  public void inOrderInts() {
+    setup();
+    int[] integers = new int[10];
+    for (int i = 0; i < 10; i++) {
+      integers[i] = i;
+    }
+
+    for (int i : integers) {
+      ints.set(i, Integer.toString(i));
+    }
+
+    for (int i = 0; i < integers.length; i++) {
+      assertTrue(Integer.toString(integers[i]) == ints.remove(integers[i]));
+    }
+  } // inOrderInts
+
+  /**
+   * get simple int data in order
+   */
+  @Test
+  public void inOrderString() {
+    setup();
+    String[] myString = "brownfxjump".split("");
+
+    for (String s : myString) {
+      strings.set(s, s);
+    }
+
+    for (int i = 0; i < myString.length; i++) {
+      assertTrue(myString[i] == strings.remove(myString[i]));
+    }
+  } // inOrderStrings
+
+
+  /**
+   * Retrieve data in reverse order from the list
+   */
+  @Test
+  public void reverseInts() {
+    setup();
+    int[] integers = new int[10];
+    for (int i = 0; i < 10; i++) {
+      integers[i] = i;
+    }
+    for (int i : integers) {
+      ints.set(i, Integer.toString(i));
+    }
+    for (int i = integers.length - 1; i >= 0; i--) {
+      assertTrue(Integer.toString(integers[i]) == ints.remove(integers[i]));
+    }
+  } // reverseInts
+  
+  /**
+   * get simple int data in order
+   */
+  @Test
+  public void reverseString() {
+    setup();
+    String[] myString = "brownfxjump".split("");
+
+    for (String s : myString) {
+      strings.set(s, s);
+    }
+
+    for (int i = myString.length - 1; i >= 0; i--) {
+      assertTrue(myString[i] == strings.remove(myString[i]));
+    }
+  } // reverseStrings
+  
+  @Test
+  public void reallyBig() {
+    setup();
+    int[] integers = new int[10000];
+    for (int i = 0; i < 10000; i++) {
+      integers[i] = i;
+    }
+
+    for (int i : integers) {
+      ints.set(i, Integer.toString(i));
+    }
+
+    for (int i = 0; i < integers.length; i++) {
+      assertTrue(Integer.toString(integers[i]) == ints.remove(integers[i]));
+    }
+  } // reallyBig
+  
+  
+ 
 
   // +-----------------+-------------------------------------------------
   // | RandomizedTests |
@@ -289,7 +399,7 @@ public class SkipListTests {
           set(rand);
         } // if it's not already there.
         if (!ints.containsKey(rand)) {
-          log("After adding " + rand + ", contains(" + rand +") fails");
+          log("After adding " + rand + ", contains(" + rand + ") fails");
           ok = false;
         } // if (!ints.contains(rand))
       } // if we add
@@ -298,7 +408,7 @@ public class SkipListTests {
         remove(rand);
         keys.remove((Integer) rand);
         if (ints.containsKey(rand)) {
-          log("After removing " + rand + ", contains(" + rand +") succeeds");
+          log("After removing " + rand + ", contains(" + rand + ") succeeds");
           ok = false;
         } // if ints.contains(rand)
       } // if we remove
@@ -318,10 +428,18 @@ public class SkipListTests {
       fail("Operations failed");
     } // if (!ok)
   } // randomTest()
-  
+
   public static void main(String[] args) {
     SkipListTests slt = new SkipListTests();
     slt.setup();
     slt.simpleTest();
+    slt.emptyTest();
+    slt.containsTest();
+    slt.inOrderInts();
+    slt.randomTest();
+    slt.inOrderString();
+    slt.reverseInts();
+    slt.reverseString();
+    slt.reallyBig();
   } // main
 } // class SkipListTests
